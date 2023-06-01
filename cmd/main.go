@@ -50,16 +50,6 @@ func init() {
 }
 
 func main() {
-	var metricsAddr string
-	var enableLeaderElection bool
-	var probeAddr string
-	var eksClusterName string
-	flag.StringVar(&metricsAddr, "metrics-bind-address", ":8080", "The address the metric endpoint binds to.")
-	flag.StringVar(&probeAddr, "health-probe-bind-address", ":8081", "The address the probe endpoint binds to.")
-	flag.BoolVar(&enableLeaderElection, "leader-elect", false,
-		"Enable leader election for controller manager. "+
-			"Enabling this will ensure there is only one active controller manager.")
-	flag.StringVar(&eksClusterName, "eks-cluster-name", "", "The name of the EKS cluster")
 	opts := zap.Options{
 		Development: true,
 	}
@@ -100,25 +90,11 @@ func main() {
 		setupLog.Error(err, "unable to create controller", "controller", "EKSPodEipAssign")
 		os.Exit(1)
 	}
-	//if err = (&controller.EKSPodEipApplyReconciler{
-	//	Client: mgr.GetClient(),
-	//	Scheme: mgr.GetScheme(),
-	//}).SetupWithManager(mgr); err != nil {
-	//	setupLog.Error(err, "unable to create controller", "controller", "EKSPodEipApply")
-	//	os.Exit(1)
-	//}
-	if err = (&controller.EKSPodEIPAddressStoreReconciler{
+	if err = (&controller.EKSPodEipApplyReconciler{
 		Client: mgr.GetClient(),
 		Scheme: mgr.GetScheme(),
 	}).SetupWithManager(mgr); err != nil {
-		setupLog.Error(err, "unable to create controller", "controller", "EKSPodEIPAddressStore")
-		os.Exit(1)
-	}
-	if err = (&controller.EKSPodEIPAssociationReconciler{
-		Client: mgr.GetClient(),
-		Scheme: mgr.GetScheme(),
-	}).SetupWithManager(mgr); err != nil {
-		setupLog.Error(err, "unable to create controller", "controller", "EKSPodEIPAssociation")
+		setupLog.Error(err, "unable to create controller", "controller", "EKSPodEipApply")
 		os.Exit(1)
 	}
 	//+kubebuilder:scaffold:builder

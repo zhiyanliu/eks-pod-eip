@@ -48,6 +48,7 @@ type EKSPodEipAssignReconciler struct {
 }
 
 //+kubebuilder:rbac:groups=core,resources=pods,verbs=get;list;watch;update;patch
+//+kubebuilder:rbac:groups=core,resources=pods/finalizers,verbs=update
 //+kubebuilder:rbac:groups=core,resources=namespaces,verbs=get;list;watch
 
 // Reconcile is part of the main kubernetes reconciliation loop which aims to
@@ -95,18 +96,18 @@ func (r *EKSPodEipAssignReconciler) Reconcile(ctx context.Context, req ctrl.Requ
 			}
 		}
 
-		if awsEIPAllocationId, err := r.IPAM.EnsureAllocation(&pod); err != nil {
+		if eipAllocationID, err := r.IPAM.EnsureAssociation(&pod); err != nil {
 			return ctrl.Result{}, err
 		} else {
 			logger.V(1).Info(fmt.Sprintf(
-				"pod %s is assigned with the aws EIP allocation %s", req.NamespacedName, awsEIPAllocationId))
+				"pod %s is assigned with the aws EIP allocation %s", req.NamespacedName, eipAllocationID))
 		}
 	} else { // pod EIP allocation is disabled or the pod is being deleted
-		if awsEIPAllocationId, err := r.IPAM.ReleaseAllocation(&pod); err != nil {
+		if eipAllocationID, err := r.IPAM.ReleaseAssociation(&pod); err != nil {
 			return ctrl.Result{}, err
-		} else if awsEIPAllocationId != "" {
+		} else if eipAllocationID != "" {
 			logger.V(1).Info(fmt.Sprintf(
-				"pod %s is unassigned from the aws EIP allocation %s", req.NamespacedName, awsEIPAllocationId))
+				"pod %s is unassigned from the aws EIP allocation %s", req.NamespacedName, eipAllocationID))
 		}
 
 		// remove the finalizer from the pod

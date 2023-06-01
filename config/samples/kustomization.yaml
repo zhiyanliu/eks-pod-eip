@@ -1,5 +1,4 @@
 ## Append samples of your project ##
 resources:
-- ekspodeip_v1_ekspodeipaddressstore.yaml
 - ekspodeip_v1_ekspodeipassociation.yaml
 #+kubebuilder:scaffold:manifestskustomizesamples

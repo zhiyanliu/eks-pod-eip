@@ -32,25 +32,21 @@ rules:
 - apiGroups:
   - ekspodeip.rp.amazonaws.com
   resources:
-  - ekspodeipapplies
+  - ekspodeipassociations
   verbs:
-  - create
-  - delete
   - get
   - list
-  - patch
-  - update
   - watch
 - apiGroups:
   - ekspodeip.rp.amazonaws.com
   resources:
-  - ekspodeipapplies/finalizers
+  - ekspodeipassociations/finalizers
   verbs:
   - update
 - apiGroups:
   - ekspodeip.rp.amazonaws.com
   resources:
-  - ekspodeipapplies/status
+  - ekspodeipassociations/status
   verbs:
   - get
   - patch

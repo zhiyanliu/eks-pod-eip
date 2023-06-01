@@ -23,44 +23,45 @@ import (
 // EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN!
 // NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
 
-// EKSPodEIPAssociationSpec defines the desired state of EKSPodEIPAssociation
-type EKSPodEIPAssociationSpec struct {
+// EKSPodEipAssociationSpec defines the desired state of EKSPodEipAssociation
+type EKSPodEipAssociationSpec struct {
 	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
-	EIPAllocationID string `json:"eipAllocationID"`
+	EIPAllocationId string `json:"eipAllocationId"`
 	PodNamespace    string `json:"podNamespace"`
 	PodName         string `json:"podName"`
 	PrivateIP       string `json:"privateIP"`
 }
 
-// EKSPodEIPAssociationStatus defines the observed state of EKSPodEIPAssociation
-type EKSPodEIPAssociationStatus struct {
+// EKSPodEipAssociationStatus defines the observed state of EKSPodEipAssociation
+type EKSPodEipAssociationStatus struct {
 	// INSERT ADDITIONAL STATUS FIELD - define observed state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
-	Associated bool `json:"associated"`
+	Associated bool   `json:"associated"`
+	ElasticIP  string `json:"elasticIP"`
 }
 
 //+kubebuilder:object:root=true
 //+kubebuilder:subresource:status
 
-// EKSPodEIPAssociation is the Schema for the ekspodeipassociations API
-type EKSPodEIPAssociation struct {
+// EKSPodEipAssociation is the Schema for the EKSPodEipAssociations API
+type EKSPodEipAssociation struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   EKSPodEIPAssociationSpec   `json:"spec,omitempty"`
-	Status EKSPodEIPAssociationStatus `json:"status,omitempty"`
+	Spec   EKSPodEipAssociationSpec   `json:"spec,omitempty"`
+	Status EKSPodEipAssociationStatus `json:"status,omitempty"`
 }
 
 //+kubebuilder:object:root=true
 
-// EKSPodEIPAssociationList contains a list of EKSPodEIPAssociation
-type EKSPodEIPAssociationList struct {
+// EKSPodEipAssociationList contains a list of EKSPodEipAssociation
+type EKSPodEipAssociationList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []EKSPodEIPAssociation `json:"items"`
+	Items           []EKSPodEipAssociation `json:"items"`
 }
 
 func init() {
-	SchemeBuilder.Register(&EKSPodEIPAssociation{}, &EKSPodEIPAssociationList{})
+	SchemeBuilder.Register(&EKSPodEipAssociation{}, &EKSPodEipAssociationList{})
 }

@@ -18,3 +18,33 @@ func removeString(slice []string, s string) (result []string) {
 	}
 	return
 }
+
+//
+//func queryEniIDbyPrivateIP(privateIP string) (eniID string, err error) {
+//	awsSession := session.Must(session.NewSessionWithOptions(session.Options{
+//		SharedConfigState: session.SharedConfigEnable,
+//	}))
+//
+//	svc := ec2.New(awsSession)
+//
+//	result, err := svc.DescribeNetworkInterfaces(&ec2.DescribeNetworkInterfacesInput{
+//		Filters: []*ec2.Filter{
+//			{
+//				Name:   aws.String("addresses.private-ip-address"),
+//				Values: []*string{aws.String(privateIP)},
+//			},
+//		},
+//	})
+//
+//	if err != nil {
+//		log.Println("Error describing network interfaces:", err)
+//		return nil
+//	}
+//
+//	if len(result.NetworkInterfaces) == 0 {
+//		log.Println("No ENI found associated with the private IP:", privateIp)
+//		return nil
+//	}
+//
+//	return result.NetworkInterfaces[0].NetworkInterfaceId
+//}
