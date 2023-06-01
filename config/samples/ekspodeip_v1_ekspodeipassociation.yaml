@@ -1,5 +1,5 @@
 apiVersion: ekspodeip.rp.amazonaws.com/v1
-kind: EKSPodEipAssociation
+kind: EksPodEipAssociation
 metadata:
   labels:
     app.kubernetes.io/name: ekspodeipassociation

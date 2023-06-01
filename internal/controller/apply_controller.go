@@ -18,16 +18,17 @@ package controller
 
 import (
 	"context"
-	ekspodeipv1 "github.com/zhiyanliu/eks-pod-eip/api/v1"
 
 	"k8s.io/apimachinery/pkg/runtime"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/log"
+
+	ekspodeipv1 "github.com/zhiyanliu/eks-pod-eip/api/v1"
 )
 
-// EKSPodEipApplyReconciler reconciles a EKSPodEipAssociation object
-type EKSPodEipApplyReconciler struct {
+// EksPodEipApplyReconciler reconciles a EksPodEipAssociation object
+type EksPodEipApplyReconciler struct {
 	client.Client
 	Scheme *runtime.Scheme
 }
@@ -41,7 +42,7 @@ type EKSPodEipApplyReconciler struct {
 //
 // For more details, check Reconcile and its Result here:
 // - https://pkg.go.dev/sigs.k8s.io/controller-runtime@v0.14.4/pkg/reconcile
-func (r *EKSPodEipApplyReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
+func (r *EksPodEipApplyReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
 	_ = log.FromContext(ctx)
 
 	// TODO(user): your logic here
@@ -50,9 +51,9 @@ func (r *EKSPodEipApplyReconciler) Reconcile(ctx context.Context, req ctrl.Reque
 }
 
 // SetupWithManager sets up the controller with the Manager.
-func (r *EKSPodEipApplyReconciler) SetupWithManager(mgr ctrl.Manager) error {
+func (r *EksPodEipApplyReconciler) SetupWithManager(mgr ctrl.Manager) error {
 	return ctrl.NewControllerManagedBy(mgr).
 		Named("eks-pod-eip-apply-controller").
-		For(&ekspodeipv1.EKSPodEipAssociation{}).
+		For(&ekspodeipv1.EksPodEipAssociation{}).
 		Complete(r)
 }

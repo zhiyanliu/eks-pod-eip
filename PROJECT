@@ -8,37 +8,13 @@ layout:
 projectName: eks-pod-eip
 repo: github.com/zhiyanliu/eks-pod-eip
 resources:
-- controller: true
-  domain: rp.amazonaws.com
-  group: ekspodeip
-  kind: EKSPodEip
-  version: v1
-- controller: true
-  domain: rp.amazonaws.com
-  group: ekspodeip
-  kind: EKSPodEipAssign
-  version: v1
-- controller: true
-  domain: rp.amazonaws.com
-  group: ekspodeip
-  kind: EKSPodEipApply
-  version: v1
 - api:
     crdVersion: v1
-    namespaced: true
+    namespaced: false
   controller: true
   domain: rp.amazonaws.com
   group: ekspodeip
-  kind: EKSPodEIPAddressStore
-  path: github.com/zhiyanliu/eks-pod-eip/api/v1
-  version: v1
-- api:
-    crdVersion: v1
-    namespaced: true
-  controller: true
-  domain: rp.amazonaws.com
-  group: ekspodeip
-  kind: EKSPodEipAssociation
+  kind: EksPodEipAssociation
   path: github.com/zhiyanliu/eks-pod-eip/api/v1
   version: v1
 version: "3"

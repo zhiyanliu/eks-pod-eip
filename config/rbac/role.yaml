@@ -34,8 +34,10 @@ rules:
   resources:
   - ekspodeipassociations
   verbs:
+  - delete
   - get
   - list
+  - update
   - watch
 - apiGroups:
   - ekspodeip.rp.amazonaws.com

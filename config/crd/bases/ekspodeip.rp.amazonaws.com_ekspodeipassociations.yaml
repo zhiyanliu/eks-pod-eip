@@ -9,16 +9,16 @@ metadata:
 spec:
   group: ekspodeip.rp.amazonaws.com
   names:
-    kind: EKSPodEipAssociation
-    listKind: EKSPodEipAssociationList
+    kind: EksPodEipAssociation
+    listKind: EksPodEipAssociationList
     plural: ekspodeipassociations
     singular: ekspodeipassociation
-  scope: Namespaced
+  scope: Cluster
   versions:
   - name: v1
     schema:
       openAPIV3Schema:
-        description: EKSPodEipAssociation is the Schema for the EKSPodEipAssociations
+        description: EksPodEipAssociation is the Schema for the EksPodEipAssociations
           API
         properties:
           apiVersion:
@@ -34,7 +34,7 @@ spec:
           metadata:
             type: object
           spec:
-            description: EKSPodEipAssociationSpec defines the desired state of EKSPodEipAssociation
+            description: EksPodEipAssociationSpec defines the desired state of EksPodEipAssociation
             properties:
               eipAllocationId:
                 description: 'INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
@@ -53,8 +53,8 @@ spec:
             - privateIP
             type: object
           status:
-            description: EKSPodEipAssociationStatus defines the observed state of
-              EKSPodEipAssociation
+            description: EksPodEipAssociationStatus defines the observed state of
+              EksPodEipAssociation
             properties:
               associated:
                 description: 'INSERT ADDITIONAL STATUS FIELD - define observed state

@@ -1,55 +1,49 @@
 package ipam
 
 import (
-	"fmt"
-
+	"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/aws/session"
+	"github.com/aws/aws-sdk-go/service/ec2"
 	corev1 "k8s.io/api/core/v1"
-	"sigs.k8s.io/controller-runtime/pkg/client"
+
+	"github.com/zhiyanliu/eks-pod-eip/internal"
 )
 
 type IPAddressManager struct {
-	k8sClient client.Client
+	awsSession *session.Session
+	vpcId      string
 }
 
-func NewIPAddressManager(k8sClient client.Client) *IPAddressManager {
+func NewIPAddressManager(awsSession *session.Session) *IPAddressManager {
+	if awsSession == nil {
+		panic("aws session is nil")
+	}
+
 	return &IPAddressManager{
-		k8sClient: k8sClient,
+		awsSession: awsSession,
 	}
 }
 
-func (m *IPAddressManager) EnsureAssociation(pod *corev1.Pod) (string, error) {
-	if pod == nil {
-		return "", fmt.Errorf("pod is nil")
+func (m *IPAddressManager) AllocateEip(pod *corev1.Pod) (string, error) {
+	if preferredEIPAllocationId, exists := pod.GetAnnotations()[internal.PodEipAllocationIdAnnotation]; exists {
+		return preferredEIPAllocationId, nil
+	}
+	return m.createAwsEip()
+}
+
+func (m *IPAddressManager) ReleaseEip(pod *corev1.Pod) (string, error) {
+	return "", nil
+}
+
+func (m *IPAddressManager) createAwsEip() (string, error) {
+	ec2Svc := ec2.New(m.awsSession)
+
+	eipAllocation, err := ec2Svc.AllocateAddress(&ec2.AllocateAddressInput{
+		Domain: aws.String("vpc"),
+	})
+	if err != nil {
+		return "", err
 	}
 
-	//fmt.Sprintf("%s/%s", pod.GetNamespace(), pod.GetName())
-
-	//eipAllocationId
-
-	//if preferredEIPAllocationId, exists := pod.GetAnnotations()[internal.PodEipAllocationIdAnnotation]; exists {
-	//	preferredEIPAllocationId
-	//	m.associate(pod)
-	//}
-
-	return "", nil
-}
-
-func (m *IPAddressManager) ReleaseAssociation(pod *corev1.Pod) (string, error) {
-	return "", nil
-}
-
-func (m *IPAddressManager) createAssociation(pod *corev1.Pod, eipAllocationId string) (string, error) {
-	return "", nil
-}
-
-func (m *IPAddressManager) updateAssociation(pod *corev1.Pod, eipAllocationId string) (string, error) {
-	return "", nil
-}
-
-func (m *IPAddressManager) deleteAssociation(pod *corev1.Pod, eipAllocationId string) (string, error) {
-	return "", nil
-}
-
-func (m *IPAddressManager) newEip(pod *corev1.Pod) (string, error) {
-	return "", nil
+	return *eipAllocation.AllocationId, nil
 }

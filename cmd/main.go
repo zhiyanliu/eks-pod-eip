@@ -60,10 +60,10 @@ func main() {
 
 	mgr, err := ctrl.NewManager(ctrl.GetConfigOrDie(), ctrl.Options{
 		Scheme:                 scheme,
-		MetricsBindAddress:     metricsAddr,
+		MetricsBindAddress:     MetricsAddr,
 		Port:                   9443,
-		HealthProbeBindAddress: probeAddr,
-		LeaderElection:         enableLeaderElection,
+		HealthProbeBindAddress: ProbeAddr,
+		LeaderElection:         EnableLeaderElection,
 		LeaderElectionID:       "eb794402.rp.amazonaws.com",
 		// LeaderElectionReleaseOnCancel defines if the leader should step down voluntarily
 		// when the Manager ends. This requires the binary to immediately end when the
@@ -82,19 +82,23 @@ func main() {
 		os.Exit(1)
 	}
 
-	if err = (&controller.EKSPodEipAssignReconciler{
-		Client: mgr.GetClient(),
-		Scheme: mgr.GetScheme(),
-		IPAM:   ipam.NewIPAddressManager(mgr.GetClient()),
+	awsSession := getAwsSession()
+
+	if err = (&controller.EksPodEipAssignReconciler{
+		Client:               mgr.GetClient(),
+		Scheme:               mgr.GetScheme(),
+		IPAM:                 ipam.NewIPAddressManager(awsSession),
+		AssociationNamespace: AssociationNamespace,
+		VpcId:                getEksVpcId(awsSession),
 	}).SetupWithManager(mgr); err != nil {
-		setupLog.Error(err, "unable to create controller", "controller", "EKSPodEipAssign")
+		setupLog.Error(err, "unable to create controller", "controller", "EksPodEipAssign")
 		os.Exit(1)
 	}
-	if err = (&controller.EKSPodEipApplyReconciler{
+	if err = (&controller.EksPodEipApplyReconciler{
 		Client: mgr.GetClient(),
 		Scheme: mgr.GetScheme(),
 	}).SetupWithManager(mgr); err != nil {
-		setupLog.Error(err, "unable to create controller", "controller", "EKSPodEipApply")
+		setupLog.Error(err, "unable to create controller", "controller", "EksPodEipApply")
 		os.Exit(1)
 	}
 	//+kubebuilder:scaffold:builder

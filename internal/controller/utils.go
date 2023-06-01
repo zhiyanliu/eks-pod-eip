@@ -1,5 +1,11 @@
 package controller
 
+import (
+	"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/aws/session"
+	"github.com/aws/aws-sdk-go/service/ec2"
+)
+
 func containsString(slice []string, s string) bool {
 	for _, item := range slice {
 		if item == s {
@@ -19,32 +25,25 @@ func removeString(slice []string, s string) (result []string) {
 	return
 }
 
-//
-//func queryEniIDbyPrivateIP(privateIP string) (eniID string, err error) {
-//	awsSession := session.Must(session.NewSessionWithOptions(session.Options{
-//		SharedConfigState: session.SharedConfigEnable,
-//	}))
-//
-//	svc := ec2.New(awsSession)
-//
-//	result, err := svc.DescribeNetworkInterfaces(&ec2.DescribeNetworkInterfacesInput{
-//		Filters: []*ec2.Filter{
-//			{
-//				Name:   aws.String("addresses.private-ip-address"),
-//				Values: []*string{aws.String(privateIP)},
-//			},
-//		},
-//	})
-//
-//	if err != nil {
-//		log.Println("Error describing network interfaces:", err)
-//		return nil
-//	}
-//
-//	if len(result.NetworkInterfaces) == 0 {
-//		log.Println("No ENI found associated with the private IP:", privateIp)
-//		return nil
-//	}
-//
-//	return result.NetworkInterfaces[0].NetworkInterfaceId
-//}
+func getAwsEniId(awsSession *session.Session, privateIP string) (string, error) {
+	ec2Svc := ec2.New(awsSession)
+
+	result, err := ec2Svc.DescribeNetworkInterfaces(&ec2.DescribeNetworkInterfacesInput{
+		Filters: []*ec2.Filter{
+			{
+				Name:   aws.String("addresses.private-ip-address"),
+				Values: []*string{aws.String(privateIP)},
+			},
+		},
+	})
+
+	if err != nil {
+		return "", err
+	}
+
+	if len(result.NetworkInterfaces) == 0 {
+		return "", nil
+	}
+
+	return *result.NetworkInterfaces[0].NetworkInterfaceId, nil
+}
