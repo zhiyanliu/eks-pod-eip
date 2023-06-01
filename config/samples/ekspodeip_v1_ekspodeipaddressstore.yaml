@@ -1,0 +1,12 @@
+apiVersion: ekspodeip.rp.amazonaws.com/v1
+kind: EKSPodEIPAddressStore
+metadata:
+  labels:
+    app.kubernetes.io/name: ekspodeipaddressstore
+    app.kubernetes.io/instance: ekspodeipaddressstore-sample
+    app.kubernetes.io/part-of: eks-pod-eip
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/created-by: eks-pod-eip
+  name: ekspodeipaddressstore-sample
+spec:
+  # TODO(user): Add fields here

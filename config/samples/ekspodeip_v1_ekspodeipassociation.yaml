@@ -1,0 +1,12 @@
+apiVersion: ekspodeip.rp.amazonaws.com/v1
+kind: EKSPodEIPAssociation
+metadata:
+  labels:
+    app.kubernetes.io/name: ekspodeipassociation
+    app.kubernetes.io/instance: ekspodeipassociation-sample
+    app.kubernetes.io/part-of: eks-pod-eip
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/created-by: eks-pod-eip
+  name: ekspodeipassociation-sample
+spec:
+  # TODO(user): Add fields here

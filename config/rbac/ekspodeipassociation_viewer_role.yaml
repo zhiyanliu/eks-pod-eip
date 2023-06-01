@@ -1,0 +1,27 @@
+# permissions for end users to view ekspodeipassociations.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/name: clusterrole
+    app.kubernetes.io/instance: ekspodeipassociation-viewer-role
+    app.kubernetes.io/component: rbac
+    app.kubernetes.io/created-by: eks-pod-eip
+    app.kubernetes.io/part-of: eks-pod-eip
+    app.kubernetes.io/managed-by: kustomize
+  name: ekspodeipassociation-viewer-role
+rules:
+- apiGroups:
+  - ekspodeip.rp.amazonaws.com
+  resources:
+  - ekspodeipassociations
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - ekspodeip.rp.amazonaws.com
+  resources:
+  - ekspodeipassociations/status
+  verbs:
+  - get

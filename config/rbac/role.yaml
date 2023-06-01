@@ -1,0 +1,57 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  creationTimestamp: null
+  name: manager-role
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - namespaces
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - ""
+  resources:
+  - pods
+  verbs:
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - ""
+  resources:
+  - pods/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - ekspodeip.rp.amazonaws.com
+  resources:
+  - ekspodeipapplies
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - ekspodeip.rp.amazonaws.com
+  resources:
+  - ekspodeipapplies/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - ekspodeip.rp.amazonaws.com
+  resources:
+  - ekspodeipapplies/status
+  verbs:
+  - get
+  - patch
+  - update
